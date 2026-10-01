@@ -1,0 +1,8 @@
+{
+  "name": "sukoot",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node -e \"const http = require('http'), fs = require('fs'), path = require('path'); const mime = {'.html':'text/html','.webp':'image/webp','.jpg':'image/jpeg','.png':'image/png','.css':'text/css','.js':'text/javascript'}; http.createServer((req, res) => { let fp = path.join(process.cwd(), req.url === '/' ? 'index.html' : req.url.split('?')[0]); if (fs.existsSync(fp) && fs.statSync(fp).isFile()) { res.setHeader('Content-Type', mime[path.extname(fp)] || 'application/octet-stream'); fs.createReadStream(fp).pipe(res); } else { res.writeHead(404); res.end('Not Found'); } }).listen(3000, '0.0.0.0', () => console.log('Serving on 3000'));\""
+  }
+}
