@@ -1,2 +1,2 @@
 # sukoot
-[drafts]
+Classical Urdu and Persian verse with English translations.
