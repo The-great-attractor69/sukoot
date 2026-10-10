@@ -3,9 +3,15 @@
        "id": "hafez-001",
        "poet": "Hafez",
        "language": "fa",
-       "text": "",
-       "translation": "",
-       "note": "",
-       "source": ""
+       "text": [
+         "دل می رود ز دستم صاحب دلان خدا را",
+         "دردا که راز پنهان خواهد شد آشکارا"
+       ],
+       "translation": [
+         "My heart is slipping from my hands, O people of heart, for God's sake!",
+         "Alas, my hidden secret is about to be revealed!"
+       ],
+       "note": "At its core, the verse captures the vulnerability of losing emotional self-control. Whether interpreted through a mystical lens (divine ecstasy) or a secular one (romantic passion), it depicts the fear and inevitability of having one's deepest, most guarded feelings exposed to the world.",
+       "source": "Guldasta-e-Qawwali (Pg. 3)"
      }
    ]
