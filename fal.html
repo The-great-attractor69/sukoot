@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ur" dir="rtl">
 <head>
+     <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>فال | سکوت</title>
@@ -84,8 +85,85 @@
       <a href="#">فارسی</a>
       <a href="#">اردو</a>
       <a href="#">شعراء</a>
+      <a href="fal.html">فال</a>
       <a href="#">مزید</a>
     </nav>
   </header>
+     <style>
+     .fal { font-family: "Noto Nastaliq Urdu", serif; line-height: 2.2; }
+     .fal-input, .fal-button { line-height: 1.7; }
+     .fal { min-height: 70vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2rem; padding: 2rem; color: #fff; text-align: center; }
+     .fal-input { width: min(28rem, 90%); padding: .8rem 1rem; background: rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.35); border-radius: 8px; color: #fff; font: inherit; text-align: center; }
+     .fal-button { padding: .7rem 2rem; background: transparent; border: 1px solid rgba(255,255,255,.6); border-radius: 8px; color: #fff; font: inherit; cursor: pointer; }
+     .fal-button:hover { background: rgba(255,255,255,.12); }
+     .verse { opacity: 0; transition: opacity 1.5s ease; max-width: 36rem; }
+     .verse.show { opacity: 1; }
+     .verse-text p { font-size: 1.7rem; margin: 0; }
+     .verse-translation, .verse-note { direction: ltr; font-family: Georgia, serif; line-height: 1.6; }
+     .verse-translation { font-style: italic; opacity: .9; }
+     .verse-note { font-size: .95rem; opacity: .7; }
+   </style>
+
+   <main class="fal">
+     <p>اپنا سوال دل میں رکھیں، یا یہاں لکھیں</p>
+     <input id="question" class="fal-input" type="text" dir="rtl" autocomplete="off">
+     <button id="draw" class="fal-button" type="button">فال نکالیں</button>
+     <section id="result" hidden></section>
+
+   </main>
+   <script>
+  function hash(s) {
+    let h = 0;
+    for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+    return h;
+  }
+
+  async function pickVerse(question) {
+    const res = await fetch("data/verses.json");
+    const verses = await res.json();
+    const q = question.trim().toLowerCase();
+    if (!q) return verses[Math.floor(Math.random() * verses.length)];
+    return verses[hash(q + new Date().toDateString()) % verses.length];
+  }
+
+  function show(verse) {
+    const box = document.getElementById("result");
+    box.replaceChildren();
+    box.className = "verse";
+    const text = document.createElement("div");
+    text.dir = "rtl";
+    text.className = "verse-text";
+    verse.text.forEach(t => {
+      const p = document.createElement("p");
+      p.textContent = t;
+      text.append(p);
+    });
+    const tr = document.createElement("p");
+    tr.className = "verse-translation";
+    tr.textContent = verse.translation.join(" ");
+    const note = document.createElement("p");
+    note.className = "verse-note";
+    note.textContent = verse.note;
+    box.append(text, tr, note);
+    box.hidden = false;
+    requestAnimationFrame(() => requestAnimationFrame(() => box.classList.add("show")));
+  }
+
+  document.getElementById("draw").addEventListener("click", async () => {
+    const btn = document.getElementById("draw");
+    const box = document.getElementById("result");
+    btn.disabled = true;
+    box.hidden = true;
+    box.classList.remove("show");
+    try {
+      const verse = await pickVerse(document.getElementById("question").value);
+      await new Promise(r => setTimeout(r, 2500));
+      show(verse);
+    } catch (e) {
+      console.error(e);
+    }
+    btn.disabled = false;
+  });
+</script>
 </body>
 </html>
